@@ -1,7 +1,5 @@
 const { Pool } = require('pg');
 
-const input = process.argv[2].toUpperCase();
-
 const pool = new Pool({
   user: 'vagrant',
   password: '123',
@@ -15,11 +13,10 @@ FROM teachers
 JOIN assistance_requests ON teachers.id = teacher_id
 JOIN students ON students.id = student_id
 JOIN cohorts ON cohorts.id = cohort_id
-WHERE cohorts.name = '${input}'
+WHERE cohorts.name = '${process.argv[2] || 'JUL02'}'
 ORDER BY teacher;
 `)
 .then(res => {
-  console.log('connected');
   res.rows.forEach(user => {
     console.log(`${user.cohort}: ${user.teacher}`);
   })
